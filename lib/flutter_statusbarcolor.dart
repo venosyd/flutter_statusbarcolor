@@ -1,21 +1,30 @@
 /// Call platform code to get/set status bar or navigation bar
 /// background color and foreground brightness.
+library flutter_statusbarcolor;
 
 import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
 
+///
+///
+///
 class FlutterStatusbarcolor {
+  ///
   static const MethodChannel _channel =
       const MethodChannel('plugins.fuyumi.com/statusbar');
 
+  ///
   /// Get the status bar background color.
   static Future<Color> getStatusBarColor() =>
-      _channel.invokeMethod('getstatusbarcolor').then((dynamic value) {
-        return value == null ? null : Color(value);
-      });
+      _channel.invokeMethod('getstatusbarcolor').then(
+        (dynamic value) {
+          return Color(value == null ? 0xFF333333 : value);
+        },
+      );
 
+  ///
   /// Set the status bar background color.
   static Future<void> setStatusBarColor(
     Color color, {
@@ -29,7 +38,7 @@ class FlutterStatusbarcolor {
   /// Set the status bar foreground brightness.
   /// Set to true, the color of the text and icon
   /// will be white, otherwise black.
-  static Future<void> setStatusBarWhiteForeground(bool useWhiteForeground) =>
+  static Future<void> setStatusBarWhiteForeground(bool? useWhiteForeground) =>
       _channel.invokeMethod('setstatusbarwhiteforeground', {
         'whiteForeground': useWhiteForeground,
       });
@@ -39,7 +48,7 @@ class FlutterStatusbarcolor {
   /// Get the navigation bar background color.
   static Future<Color> getNavigationBarColor() =>
       _channel.invokeMethod('getnavigationbarcolor').then((dynamic value) {
-        return value == null ? null : Color(value);
+        return Color(value == null ? 0xFF333333 : value);
       });
 
   /// Android only
@@ -62,7 +71,7 @@ class FlutterStatusbarcolor {
   /// Set to true, the color of the text and icon
   /// will be white, otherwise black.
   static Future<void> setNavigationBarWhiteForeground(
-          bool useWhiteForeground) =>
+          bool? useWhiteForeground) =>
       _channel.invokeMethod('setnavigationbarwhiteforeground', {
         'whiteForeground': useWhiteForeground,
       });
